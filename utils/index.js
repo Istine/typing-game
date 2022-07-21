@@ -44,28 +44,17 @@ export const buildTypedWords = (
     for (let i = currentIndex + 1; i < len; i++) {
       const inputWordComplete = inputArray[i].length === words[i][1].length;
       const areWordsEqual = inputArray[i] === words[i][1];
-      let isSpacePressed = false;
-
-      if (keyCode === 32) {
-        isSpacePressed = "_" === words[i][1];
-      }
 
       const key = words[i][0];
 
-      if (inputWordComplete || isSpacePressed) {
+      if (inputWordComplete) {
         if (areWordsEqual) {
           setPoints((prevPoints) => prevPoints + 1);
         }
         setWords((prev) => {
           const data = prev.map(([k, v, style = {}]) =>
             k === key
-              ? [
-                  k,
-                  v,
-                  areWordsEqual || isSpacePressed
-                    ? correctStyle
-                    : incorrectStyle,
-                ]
+              ? [k, v, areWordsEqual ? correctStyle : incorrectStyle]
               : [k, v, style]
           );
           return [...data];

@@ -7,8 +7,10 @@ import { buildTypedWords } from "../../utils";
 const Input = styled.textarea((props) => ({
   width: "80%",
   outline: "none",
-  border: "1px solid grey",
+  border: "1px solid #aaa",
   padding: ".5rem",
+  borderRadius: "5px",
+  minHeight: "10rem",
   boxSizing: "border-box",
   fontSize: ".9rem",
   resize: "none",
