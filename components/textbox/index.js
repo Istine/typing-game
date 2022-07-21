@@ -37,11 +37,6 @@ const Index = () => {
     const { value } = e.target;
     const words = storedWords.filter(([, v]) => v !== "_");
 
-    if (e.keyCode === 8) {
-      e.preventDefault();
-      return;
-    }
-
     buildTypedWords(
       value,
       currentIndex,
@@ -59,7 +54,12 @@ const Index = () => {
 
   return (
     <>
-      <Input onKeyUp={handleChange} onChange={handleChange} value={text} />
+      <Input
+        onKeyUp={handleChange}
+        onKeyDown={(e) => e.key === "Backspace" && e.preventDefault()}
+        onChange={handleChange}
+        value={text}
+      />
     </>
   );
 };
