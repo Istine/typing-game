@@ -1,20 +1,26 @@
 import styled from "@emotion/styled";
 import React from "react";
+import { usePointContext } from "../../context/points";
 import { useWordContext } from "../../context/words";
+import { buildTypedWords } from "../../utils";
 
-const Input = styled.input((props) => ({
+const Input = styled.textarea((props) => ({
   width: "80%",
   outline: "none",
   border: "1px solid grey",
-  padding: "1rem",
+  padding: ".5rem",
   boxSizing: "border-box",
-  fontSize: "1rem",
+  fontSize: ".9rem",
+  resize: "none",
+  fontFamily: "Arial",
+  ...props.style,
 }));
 
 const Index = () => {
-  const [words, setWords] = useWordContext();
+  const [storedWords, setWords] = useWordContext();
+  const [, setPoints] = usePointContext();
 
-  const [currentIndex, setCurrentIndex] = React.useState(0);
+  const [currentIndex, setCurrentIndex] = React.useState(-1);
 
   const [text, setText] = React.useState("");
 
@@ -29,33 +35,33 @@ const Index = () => {
 
   const handleChange = (e) => {
     const { value } = e.target;
+    const words = storedWords.filter(([, v]) => v !== "_");
 
-    if (!!value) {
-      const inputArray = value.split(" ");
-      const len = inputArray.length;
-      for (let i = currentIndex; i < len; i++) {
-        const inputWordComplete =
-          inputArray[i].split("").length === words[i][1].split("").length;
-        const areWordsEqual = inputArray[i] === words[i][1];
-        const key = words[i][0];
-        if (inputWordComplete) {
-          setWords((prev) => {
-            const data = prev.map(([k, v, style = {}]) =>
-              k === key
-                ? [k, v, areWordsEqual ? correctStyle : incorrectStyle]
-                : [k, v, style]
-            );
-            return [...data];
-          });
-          setCurrentIndex(i);
-        }
-      }
+    if (e.keyCode === 8) {
+      e.preventDefault();
+      return;
     }
+
+    buildTypedWords(
+      value,
+      currentIndex,
+      setCurrentIndex,
+      words,
+      setPoints,
+      setWords,
+      correctStyle,
+      incorrectStyle,
+      e.keyCode
+    );
 
     setText(value);
   };
 
-  return <Input onChange={handleChange} value={text} />;
+  return (
+    <>
+      <Input onKeyUp={handleChange} onChange={handleChange} value={text} />
+    </>
+  );
 };
 
 export default Index;

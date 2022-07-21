@@ -4,7 +4,7 @@ import Letter from "./Letter";
 import { buildWithUniqueIds } from "../../utils";
 
 const StyledWord = styled.div((props) => ({
-  padding: ".5rem",
+  padding: ".5rem 0",
   display: "flex",
   ...props.style,
 }));
@@ -12,7 +12,9 @@ const StyledWord = styled.div((props) => ({
 const Word = (props) => {
   const Letters = buildWithUniqueIds(props.word, "letter").map(
     ([key, letter]) => {
-      return <Letter key={key} letter={letter} />;
+      return (
+        <Letter key={key} letter={letter === "_" ? <>&nbsp;</> : letter} />
+      );
     }
   );
 

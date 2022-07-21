@@ -5,6 +5,7 @@ import TextBox from "../textbox";
 
 import { buildWithUniqueIds } from "../../utils";
 import { useWordContext } from "../../context/words";
+import { usePointContext } from "../../context/points";
 
 const Paragraph = styled.div((props) => ({
   width: "80%",
@@ -25,6 +26,7 @@ const Wrapper = styled.div((props) => ({
 
 const Index = (props) => {
   const [splitWords, setWords] = useWordContext();
+  const [points, setPoints] = usePointContext();
 
   const Words = splitWords.map(([key, word, style = {}]) => {
     return <Word key={key} word={word} style={style} />;
@@ -41,6 +43,8 @@ const Index = (props) => {
 
   return (
     <Wrapper>
+      <h1>Points</h1>
+      <h1>{points}</h1>
       <Paragraph>{Words}</Paragraph>
       <TextBox />
     </Wrapper>

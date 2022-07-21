@@ -1,11 +1,14 @@
 import "../styles/globals.css";
 import WordContext from "../context/words";
+import PointsContext from "../context/points";
 
 function MyApp({ Component, pageProps }) {
   return (
-    <WordContext>
-      <Component {...pageProps} />
-    </WordContext>
+    <PointsContext>
+      <WordContext>
+        <Component {...pageProps} />
+      </WordContext>
+    </PointsContext>
   );
 }
 
