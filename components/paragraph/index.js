@@ -4,6 +4,7 @@ import Word from "./Word";
 import TextBox from "../textbox";
 
 import { buildWithUniqueIds } from "../../utils";
+import { useWordContext } from "../../context/words";
 
 const Paragraph = styled.div((props) => ({
   width: "80%",
@@ -14,7 +15,7 @@ const Paragraph = styled.div((props) => ({
   lineHeight: ".5rem",
 }));
 
-const Wrapper = styled.p((props) => ({
+const Wrapper = styled.div((props) => ({
   width: "100%",
   position: "relative",
   height: "auto",
@@ -23,16 +24,20 @@ const Wrapper = styled.p((props) => ({
 }));
 
 const Index = (props) => {
-  const [content, setContent] = React.useState("");
+  const [splitWords, setWords] = useWordContext();
 
-  const Words = buildWithUniqueIds(content).map(([key, word]) => {
-    return <Word key={key} word={word} />;
+  const Words = splitWords.map(([key, word, style = {}]) => {
+    return <Word key={key} word={word} style={style} />;
   });
 
   React.useEffect(() => {
-    setContent(props.randomParagraph);
-    //copy function logic
-  }, [content, props.randomParagraph]);
+    const effect = () => {
+      const words = buildWithUniqueIds(props.randomParagraph);
+      setWords(words);
+    };
+    effect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.randomParagraph]);
 
   return (
     <Wrapper>
@@ -42,4 +47,4 @@ const Index = (props) => {
   );
 };
 
-export default Index;
+export default React.memo(Index);
