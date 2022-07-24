@@ -5,7 +5,7 @@ import { useWordContext } from "../../context/words";
 import { buildTypedWords } from "../../utils";
 
 const Input = styled.textarea((props) => ({
-  width: "80%",
+  width: "100%",
   outline: "none",
   border: "1px solid #aaa",
   padding: ".5rem",
@@ -48,7 +48,7 @@ const Index = () => {
       setWords,
       correctStyle,
       incorrectStyle,
-      e.keyCode
+      storedWords
     );
 
     setText(value);

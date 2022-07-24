@@ -36,7 +36,7 @@ export const buildTypedWords = (
   setWords,
   correctStyle,
   incorrectStyle,
-  keyCode
+  storedWords
 ) => {
   if (!!value) {
     let inputArray = value.split(" ");
@@ -51,15 +51,13 @@ export const buildTypedWords = (
         if (areWordsEqual) {
           setPoints((prevPoints) => prevPoints + 1);
         }
-        setWords((prev) => {
-          const data = prev.map(([k, v, style = {}]) =>
-            k === key
-              ? [k, v, areWordsEqual ? correctStyle : incorrectStyle]
-              : [k, v, style]
-          );
-          return [...data];
-        });
+        const data = storedWords.map(([k, v, style = {}]) =>
+          k === key
+            ? [k, v, areWordsEqual ? correctStyle : incorrectStyle]
+            : [k, v, style]
+        );
 
+        setWords(data);
         setCurrentIndex(i);
       }
     }

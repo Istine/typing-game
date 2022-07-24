@@ -4,6 +4,9 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  background-image: url("../public//assets//bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 a {
@@ -98,4 +101,17 @@ a {
   100% {
     transform: rotate(360deg);
   }
+}
+
+.main-content {
+  width: 50%;
+  max-width: 70%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f0f0f0;
+  padding: 1rem;
+  border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
 }
