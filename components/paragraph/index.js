@@ -4,10 +4,15 @@ import Word from "./Word";
 import TextBox from "../textbox";
 import Loader from "../loader";
 import SideMenu from "../side-menu/index";
+import TimerModal from "../modal";
+import Timer from "../timer";
+import Countdown from "../timer/countdown";
 
 import { buildWithUniqueIds } from "../../utils";
 import { useWordContext } from "../../context/words";
 import { usePointContext } from "../../context/points";
+import { useTimerContext } from "../../context/time";
+import { useTimer } from "../../hooks";
 
 const Paragraph = styled.div((props) => ({
   width: "100%",
@@ -41,16 +46,23 @@ const Wrapper = styled.div((props) => ({
   position: "relative",
   height: "40rem",
   display: "flex",
-  // flexDirection: "column",
   justifyContent: "center",
-  alignItems: "center",
 }));
 
 const Index = (props) => {
   const [splitWords, setWords] = useWordContext();
   const [points, setPoint] = usePointContext();
+  const [time, setTime] = useTimerContext();
+
+  const [, , minutes, seconds] = useTimer();
 
   const [undo, setUndo] = React.useState(false);
+
+  const [isOpen, setOpen] = React.useState(false);
+
+  const handleModalOpening = (e) => {
+    setOpen((prev) => !prev);
+  };
 
   const pasteFromClipBoard = async () => {
     const clipBoardContent = await navigator.clipboard.readText();
@@ -76,6 +88,7 @@ const Index = (props) => {
     const words = buildWithUniqueIds(props.randomParagraph);
     setWords(words);
     setPoint(0);
+    setTime(null);
   };
 
   const [isLoading, setLoading] = React.useState(true);
@@ -101,13 +114,21 @@ const Index = (props) => {
         <Loader />
       ) : (
         <>
+          <TimerModal open={isOpen} fn={handleModalOpening} action="Cancel">
+            <Timer closeModal={handleModalOpening} />
+          </TimerModal>
           <SideMenu
             undo={undo}
             handleUndo={handleUndo}
             handlePaste={pasteFromClipBoard}
             resetAll={resetAll}
+            setTime={handleModalOpening}
           />
           <div className="main-content">
+            <Countdown
+              minutes={!!time ? minutes : 0}
+              seconds={!!time ? seconds : 0}
+            />
             <h1 style={{ color: "#04d1bd" }}>Points</h1>
             <h1 style={{ color: "#04d1bd" }}>{points}</h1>
             <Paragraph>{Words}</Paragraph>

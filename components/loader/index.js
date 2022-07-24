@@ -1,8 +1,11 @@
 import styled from "@emotion/styled";
 
-const Index = () => {
+const Index = (props) => {
   return (
-    <div className="lds-roller">
+    <div
+      style={{ width: "80px", height: "80px", ...props.style }}
+      className="lds-roller"
+    >
       <div></div>
       <div></div>
       <div></div>

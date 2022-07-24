@@ -1,14 +1,17 @@
 import "../styles/globals.css";
 import WordContext from "../context/words";
 import PointsContext from "../context/points";
+import TimerContext from "../context/time";
 
 function MyApp({ Component, pageProps }) {
   return (
-    <PointsContext>
-      <WordContext>
-        <Component {...pageProps} />
-      </WordContext>
-    </PointsContext>
+    <TimerContext>
+      <PointsContext>
+        <WordContext>
+          <Component {...pageProps} />
+        </WordContext>
+      </PointsContext>
+    </TimerContext>
   );
 }
 

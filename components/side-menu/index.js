@@ -19,6 +19,10 @@ const StyledMenu = styled.div((props) => ({
       color: "#e6e6e6",
     },
 
+    "&:last-child": {
+      color: "red",
+    },
+
     "&:last-child:hover": {
       color: "red",
     },
@@ -30,18 +34,18 @@ const Index = (props) => {
     <StyledMenu>
       {props.undo ? (
         <Tooltip onClick={props.handleUndo} text="Undo">
-          <FaUndo size="1.5em" />
+          <FaUndo size="2em" />
         </Tooltip>
       ) : (
         <Tooltip onClick={props.handlePaste} text="Paste From Clipboard">
-          <FaPaste size="1.5em" />
+          <FaPaste size="2em" />
         </Tooltip>
       )}
-      <Tooltip text="Set Timer">
-        <FaClock size="1.5em" />
+      <Tooltip onClick={props.setTime} text="Set Timer">
+        <FaClock size="2em" />
       </Tooltip>
       <Tooltip onClick={props.resetAll} text="Reset">
-        <FaPowerOff size="1.5em" />
+        <FaPowerOff size="2em" />
       </Tooltip>
     </StyledMenu>
   );
