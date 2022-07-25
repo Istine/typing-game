@@ -33,11 +33,6 @@ const Index = () => {
     color: "limegreen",
   };
 
-  const incorrectStyle = {
-    color: "red",
-    textDecoration: "underline",
-  };
-
   const handleChange = (e) => {
     const { value } = e.target;
     const words = storedWords.filter(([, v]) => v !== "_");
@@ -50,7 +45,6 @@ const Index = () => {
       setPoints,
       setWords,
       correctStyle,
-      incorrectStyle,
       storedWords
     );
 

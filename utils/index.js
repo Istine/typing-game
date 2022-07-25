@@ -35,7 +35,6 @@ export const buildTypedWords = (
   setPoints,
   setWords,
   correctStyle,
-  incorrectStyle,
   storedWords
 ) => {
   if (!!value) {
@@ -52,9 +51,7 @@ export const buildTypedWords = (
           setPoints((prevPoints) => prevPoints + 1);
         }
         const data = storedWords.map(([k, v, style = {}]) =>
-          k === key
-            ? [k, v, areWordsEqual ? correctStyle : incorrectStyle]
-            : [k, v, style]
+          k === key ? [k, v, areWordsEqual ? correctStyle : {}] : [k, v, style]
         );
 
         setWords(data);

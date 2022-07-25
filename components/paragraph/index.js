@@ -65,10 +65,13 @@ const Index = (props) => {
   const isElapsed = Boolean(time) && minutes <= 0 && seconds <= 0;
 
   const handleModalOpening = (e) => {
+    if (time) return;
+
     setOpen((prev) => !prev);
   };
 
   const pasteFromClipBoard = async () => {
+    if (time) return;
     const clipBoardContent = await navigator.clipboard.readText();
     if (clipBoardContent) {
       const words = buildWithUniqueIds(clipBoardContent);
@@ -79,11 +82,14 @@ const Index = (props) => {
 
   const handleUndo = React.useCallback(
     (e) => {
+      if (time) return;
+
       const words = buildWithUniqueIds(props.randomParagraph);
       setWords(words);
       setUndo(false);
     },
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [props.randomParagraph, setWords]
   );
 
