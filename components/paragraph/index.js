@@ -53,9 +53,8 @@ const Wrapper = styled.div((props) => ({
 
 const Index = (props) => {
   const [splitWords, setWords] = useWordContext();
-  const [points, setPoint] = usePointContext();
-  const [time, setTime] = useTimerContext();
-  const [, setText] = useTextContext();
+  const [points] = usePointContext();
+  const [time] = useTimerContext();
   const [minutes, seconds] = useTimer();
 
   const [undo, setUndo] = React.useState(false);
@@ -104,11 +103,11 @@ const Index = (props) => {
   });
 
   React.useEffect(() => {
-    const effect = async () => {
+    const effect = () => {
       const words = buildWithUniqueIds(props.randomParagraph);
       setWords(words);
     };
-    effect().catch(console.error);
+    effect();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.randomParagraph]);
 
@@ -130,7 +129,7 @@ const Index = (props) => {
         <h1 style={{ color: "#04d1bd", margin: ".7rem 0" }}>Points</h1>
         <h1 style={{ color: "#04d1bd", margin: ".7rem 0" }}>{points}</h1>
         <Paragraph>{Words}</Paragraph>
-        <TextBox />
+        <TextBox seconds={seconds} minutes={minutes} />
       </div>
     </Wrapper>
   );

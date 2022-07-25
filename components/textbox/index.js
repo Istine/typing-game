@@ -20,7 +20,7 @@ const Input = styled.textarea((props) => ({
   ...props.style,
 }));
 
-const Index = () => {
+const Index = ({ seconds, minutes }) => {
   const [time] = useTimerContext();
   const [storedWords, setWords] = useWordContext();
   const [, setPoints] = usePointContext();
@@ -32,6 +32,8 @@ const Index = () => {
   const correctStyle = {
     color: "limegreen",
   };
+
+  const isElapsed = Boolean(time) && minutes <= 0 && seconds <= 0;
 
   const handleChange = (e) => {
     const { value } = e.target;
@@ -56,7 +58,7 @@ const Index = () => {
         onKeyDown={(e) => e.key === "Backspace" && e.preventDefault()}
         onChange={handleChange}
         value={text}
-        disabled={!time}
+        disabled={!time || isElapsed}
         placeholder="set time to enable typing"
       />
     </>
