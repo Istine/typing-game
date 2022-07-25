@@ -46,8 +46,6 @@ const Index = (props) => {
 
   const [state, setState] = React.useState(0);
 
-  const [isLoading, setLoading] = React.useState(false);
-
   const handleClick = (value) => (e) => {
     setState(+value);
   };
@@ -59,11 +57,7 @@ const Index = (props) => {
 
   const close = (e) => {
     setTime(state);
-    setLoading(true);
-    setTimeout(() => {
-      props.closeModal();
-      setLoading(false);
-    }, 2000);
+    props.closeModal();
   };
 
   return (
@@ -92,15 +86,12 @@ const Index = (props) => {
         style={{
           width: "90%",
           alignSelf: "center",
-          backgroundColor: state < 1 || isLoading ? "#ccc" : "#05ad9d",
+          backgroundColor: state < 1 ? "#ccc" : "#05ad9d",
         }}
         onClick={close}
-        disabled={state < 1 || isLoading}
+        disabled={state < 1}
       >
-        {isLoading && (
-          <Loader style={{ width: "40px !important", height: "40px" }} />
-        )}
-        Start
+        Start Test
       </Button>
     </StyledBody>
   );

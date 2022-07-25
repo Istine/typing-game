@@ -3,6 +3,8 @@ import React from "react";
 import { usePointContext } from "../../context/points";
 import { useWordContext } from "../../context/words";
 import { buildTypedWords } from "../../utils";
+import { useTextContext } from "../../context/text";
+import { useTimerContext } from "../../context/time";
 
 const Input = styled.textarea((props) => ({
   width: "100%",
@@ -19,12 +21,13 @@ const Input = styled.textarea((props) => ({
 }));
 
 const Index = () => {
+  const [time] = useTimerContext();
   const [storedWords, setWords] = useWordContext();
   const [, setPoints] = usePointContext();
 
   const [currentIndex, setCurrentIndex] = React.useState(-1);
 
-  const [text, setText] = React.useState("");
+  const [text, setText] = useTextContext();
 
   const correctStyle = {
     color: "limegreen",
@@ -61,6 +64,8 @@ const Index = () => {
         onKeyDown={(e) => e.key === "Backspace" && e.preventDefault()}
         onChange={handleChange}
         value={text}
+        disabled={!time}
+        placeholder="set time to enable typing"
       />
     </>
   );

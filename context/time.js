@@ -13,10 +13,7 @@ const Context = (props) => {
 };
 
 export const useTimerContext = () => {
-  const [time, setTime] = useContext(TimerContext);
-  function dispatch(time) {
-    setTime(time);
-  }
+  const [time, dispatch] = useContext(TimerContext);
 
   return [time, dispatch];
 };

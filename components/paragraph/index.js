@@ -2,16 +2,18 @@ import React from "react";
 import styled from "@emotion/styled";
 import Word from "./Word";
 import TextBox from "../textbox";
-import Loader from "../loader";
 import SideMenu from "../side-menu/index";
-import TimerModal from "../modal";
+import Modal from "../modal";
 import Timer from "../timer";
 import Countdown from "../timer/countdown";
+import ScoreCard from "../score";
 
 import { buildWithUniqueIds } from "../../utils";
 import { useWordContext } from "../../context/words";
 import { usePointContext } from "../../context/points";
 import { useTimerContext } from "../../context/time";
+import { useTextContext } from "../../context/text";
+
 import { useTimer } from "../../hooks";
 
 const Paragraph = styled.div((props) => ({
@@ -53,12 +55,14 @@ const Index = (props) => {
   const [splitWords, setWords] = useWordContext();
   const [points, setPoint] = usePointContext();
   const [time, setTime] = useTimerContext();
-
-  const [, , minutes, seconds] = useTimer();
+  const [, setText] = useTextContext();
+  const [minutes, seconds] = useTimer();
 
   const [undo, setUndo] = React.useState(false);
 
   const [isOpen, setOpen] = React.useState(false);
+
+  const isElapsed = Boolean(time) && minutes <= 0 && seconds <= 0;
 
   const handleModalOpening = (e) => {
     setOpen((prev) => !prev);
@@ -80,8 +84,7 @@ const Index = (props) => {
       setUndo(false);
     },
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [props.randomParagraph]
+    [props.randomParagraph, setWords]
   );
 
   const resetAll = (e) => {
@@ -89,9 +92,8 @@ const Index = (props) => {
     setWords(words);
     setPoint(0);
     setTime(null);
+    setText("");
   };
-
-  const [isLoading, setLoading] = React.useState(true);
 
   const Words = splitWords.map(([key, word, style = {}]) => {
     return <Word key={key} word={word} style={style} />;
@@ -101,8 +103,6 @@ const Index = (props) => {
     const effect = async () => {
       const words = buildWithUniqueIds(props.randomParagraph);
       setWords(words);
-
-      setTimeout(() => setLoading(false), 4000);
     };
     effect().catch(console.error);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -110,34 +110,26 @@ const Index = (props) => {
 
   return (
     <Wrapper>
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <>
-          <TimerModal open={isOpen} fn={handleModalOpening} action="Cancel">
-            <Timer closeModal={handleModalOpening} />
-          </TimerModal>
-          <SideMenu
-            undo={undo}
-            handleUndo={handleUndo}
-            handlePaste={pasteFromClipBoard}
-            resetAll={resetAll}
-            setTime={handleModalOpening}
-          />
-          <div className="main-content">
-            <Countdown
-              minutes={!!time ? minutes : 0}
-              seconds={!!time ? seconds : 0}
-            />
-            <h1 style={{ color: "#04d1bd" }}>Points</h1>
-            <h1 style={{ color: "#04d1bd" }}>{points}</h1>
-            <Paragraph>{Words}</Paragraph>
-            <TextBox />
-          </div>
-        </>
-      )}
+      <Modal open={isOpen} fn={handleModalOpening} action="Cancel">
+        <Timer closeModal={handleModalOpening} />
+      </Modal>
+      <SideMenu
+        undo={undo}
+        handleUndo={handleUndo}
+        handlePaste={pasteFromClipBoard}
+        resetAll={resetAll}
+        setTime={handleModalOpening}
+      />
+      <div className="main-content">
+        {isElapsed && <ScoreCard paras={props.randomParagraph} time={time} />}
+        <Countdown minutes={minutes} seconds={seconds} />
+        <h1 style={{ color: "#04d1bd", margin: ".7rem 0" }}>Points</h1>
+        <h1 style={{ color: "#04d1bd", margin: ".7rem 0" }}>{points}</h1>
+        <Paragraph>{Words}</Paragraph>
+        <TextBox />
+      </div>
     </Wrapper>
   );
 };
 
-export default React.memo(Index);
+export default Index;
