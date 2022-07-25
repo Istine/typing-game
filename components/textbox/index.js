@@ -47,14 +47,12 @@ const Index = () => {
       correctStyle,
       storedWords
     );
-
     setText(value);
   };
 
   return (
     <>
       <Input
-        onKeyUp={handleChange}
         onKeyDown={(e) => e.key === "Backspace" && e.preventDefault()}
         onChange={handleChange}
         value={text}

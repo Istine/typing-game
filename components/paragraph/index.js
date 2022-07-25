@@ -94,11 +94,9 @@ const Index = (props) => {
   );
 
   const resetAll = (e) => {
-    const words = buildWithUniqueIds(props.randomParagraph);
-    setWords(words);
-    setPoint(0);
-    setTime(null);
-    setText("");
+    if (window) {
+      location.reload();
+    }
   };
 
   const Words = splitWords.map(([key, word, style = {}]) => {
